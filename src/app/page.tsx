@@ -1,112 +1,140 @@
+"use client";  // 将组件标记为客户端组件
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import '../styles/global.css';
+
+import { ArrowBottomLeftIcon, ArrowBottomRightIcon, ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon, RadiobuttonIcon,
+  ArrowTopLeftIcon, ArrowUpIcon, ArrowTopRightIcon
+} from "@radix-ui/react-icons";
+import { Button } from "@/components/ui/button";
+
+const folders = ['p111', 'p112', 'p113', 'p121', 'p122', 'p123', 'p131', 'p132', 'p133'];
 
 export default function Home() {
+  const [images, setImages] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);  // 增加加载状态
+  const [selectedFolder, setSelectedFolder] = useState('p122');
+
+  useEffect(() => {
+    setLoading(true);  // 开始加载新图片时设置为true
+    fetch(`/api/images?folder=${selectedFolder}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          console.error(data.error);
+          setImages([]);
+        } else {
+          setImages(data);
+        }
+        setLoading(false);  // 图片加载完成后设置为false
+      });
+  }, [selectedFolder]);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
+    <main className="flex h-screen">
+      <div className="w-1/4 p-10 border-r justify-center">
+        <h2 className="mt-4 scroll-m-20 pb-0 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+          TFL v1.0.0
+        </h2>
+        <p className="text-sm text-muted-foreground pb-4">
+          TM25 Face Lab
         </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+        <p className="text-sm text-muted-foreground py-4">
+          本网站基于九个头部朝向范围，对互联网上部分现存的托马斯·穆勒照片做了分类。
+          
+        </p>
+        <p className="text-sm text-muted-foreground py-4">
+          
+          点击下方任一按钮，即可选择按钮所指示的特定头部朝向范围的照片。
+        </p>
+        <div className="flex flex-col space-y-2 justify-between items-center pb-4">
+          <div className="flex space-x-2">
+            <Button size="icon"
+              onClick={() => setSelectedFolder('p111')}
+              variant={`${selectedFolder === 'p111' ?
+                "secondary" : "outline"}`}  >
+              <ArrowTopLeftIcon className="h-4 w-4" />
+            </Button>
+            <Button size="icon"
+              onClick={() => setSelectedFolder('p112')}
+              variant={`${selectedFolder === 'p112' ?
+                "secondary" : "outline"}`}  >
+              <ArrowUpIcon className="h-4 w-4" />
+            </Button>
+            <Button size="icon"
+              onClick={() => setSelectedFolder('p113')}
+              variant={`${selectedFolder === 'p113' ?
+                "secondary" : "outline"}`}  >
+              <ArrowTopRightIcon className="h-4 w-4" />
+            </Button>
+          </div>
+
+          <div className="flex space-x-2">
+            <Button size="icon"
+              onClick={() => setSelectedFolder('p121')}
+              variant={`${selectedFolder === 'p121' ?
+                "secondary" : "outline"}`}  >
+              <ArrowLeftIcon className="h-4 w-4" />
+            </Button>
+            <Button size="icon"
+              onClick={() => setSelectedFolder('p122')}
+              variant={`${selectedFolder === 'p122' ?
+                "secondary" : "outline"}`}  >
+              <RadiobuttonIcon className="h-4 w-4" />
+            </Button>
+            <Button size="icon"
+              onClick={() => setSelectedFolder('p123')}
+              variant={`${selectedFolder === 'p123' ?
+                "secondary" : "outline"}`}  >
+              <ArrowRightIcon className="h-4 w-4" />
+            </Button>
+          </div>
+
+          <div className="flex space-x-2">
+            <Button size="icon"
+              onClick={() => setSelectedFolder('p131')}
+              variant={`${selectedFolder === 'p131' ?
+                "secondary" : "outline"}`}  >
+              <ArrowBottomLeftIcon className="h-4 w-4" />
+            </Button>
+            <Button size="icon"
+              onClick={() => setSelectedFolder('p132')}
+              variant={`${selectedFolder === 'p132' ?
+                "secondary" : "outline"}`}  >
+              <ArrowDownIcon className="h-4 w-4" />
+            </Button>
+            <Button size="icon"
+              onClick={() => setSelectedFolder('p133')}
+              variant={`${selectedFolder === 'p133' ?
+                "secondary" : "outline"}`}  >
+              <ArrowBottomRightIcon className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <div className="w-3/4 h-full p-4 bg-zinc-50" style={{ overflowY: 'scroll' }}>
+        <div className="grid grid-cols-3 gap-4">
+          {loading ? (
+            // 显示占位图
+            Array(9).fill(0).map((_, index) => (
+              <div key={index} className="relative w-full h-60 bg-zinc-100 animate-pulse rounded-lg"></div>
+            ))
+          ) : images.length === 0 ? (
+            <p>No images available</p>
+          ) : (
+            images.map((src, index) => (
+              <div key={index} className="relative w-full h-60 opacity-0 transition-opacity duration-500" style={{ animation: 'fadeIn 2s forwards' }}>
+                <Image
+                  src={src}
+                  alt={`Image ${index + 1}`}
+                  fill
+                  className="object-cover rounded-lg"
+                />
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </main>
   );
