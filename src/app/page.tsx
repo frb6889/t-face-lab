@@ -10,7 +10,7 @@ import { ArrowBottomLeftIcon, ArrowBottomRightIcon, ArrowDownIcon, ArrowLeftIcon
 import { Button } from "@/components/ui/button";
 
 const folders = ['p111', 'p112', 'p113', 'p121', 'p122', 'p123', 'p131', 'p132', 'p133'];
-
+// const routeFiles = ['route111', 'route112', 'route113', 'route121', 'route122', 'route123', 'route131', 'route132', 'route133'];
 export default function Home() {
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);  // 增加加载状态
@@ -18,7 +18,8 @@ export default function Home() {
 
   useEffect(() => {
     setLoading(true);  // 开始加载新图片时设置为true
-    fetch(`/api/${selectedFolder}/images`)
+    //fetch(`/api/images?folder=${selectedFolder}`)
+    fetch(`/api/${selectedFolder}?folder=${selectedFolder}`)
       .then(res => res.json())
       .then(data => {
         if (data.error) {
