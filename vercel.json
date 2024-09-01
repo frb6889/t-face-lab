@@ -1,6 +1,6 @@
 {
     "functions": {
-      "api/images.ts": {
+      "src/app/api/images/route.ts": {
         "excludeFiles": "public/**"
       }
     }
