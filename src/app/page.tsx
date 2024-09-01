@@ -18,7 +18,7 @@ export default function Home() {
 
   useEffect(() => {
     setLoading(true);  // 开始加载新图片时设置为true
-    fetch(`/api/images?folder=${selectedFolder}`)
+    fetch(`/api/${selectedFolder}/images`)
       .then(res => res.json())
       .then(data => {
         if (data.error) {
