@@ -7,9 +7,17 @@ import '../styles/global.css';
 
 import {
   ArrowBottomLeftIcon, ArrowBottomRightIcon, ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon, RadiobuttonIcon,
-  ArrowTopLeftIcon, ArrowUpIcon, ArrowTopRightIcon, Cross2Icon
+  ArrowTopLeftIcon, ArrowUpIcon, ArrowTopRightIcon, 
+  Cross2Icon, ExternalLinkIcon, ChevronRightIcon, ChevronLeftIcon
 } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+
 
 const folders = ['p111', 'p112', 'p113', 'p121', 'p122', 'p123', 'p131', 'p132', 'p133'];
 
@@ -18,6 +26,13 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [selectedFolder, setSelectedFolder] = useState('p122');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
   
 
   useEffect(() => {
@@ -63,20 +78,31 @@ export default function Home() {
     <main className="flex h-screen">
 
       {/* 左侧 */}
-      <div className="w-1/4 p-10 border-r justify-center" style={{minWidth:'180px'}}>
-        <h2 className="mt-4 scroll-m-20 pb-0 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+      <div className={`relative ${isCollapsed ? "w-10" : "w-1/4"} transition-all duration-300 p-10 border-r`} style={{ minWidth: isCollapsed ? '50px' : '180px' }}>
+      <Button size="icon"
+        className="absolute top-4 right-4 text-white bg-gray-800 rounded-full p-2 focus:outline-none"
+        onClick={toggleSidebar}
+      >
+        {isCollapsed ? <ChevronRightIcon className="h-4 w-4" /> : <ChevronLeftIcon className="h-4 w-4" />}
+      </Button>
+      {!isCollapsed &&
+      (
+        <div>
+          <h2 className="mt-4 scroll-m-20 pb-0 lg:text-3xl md:text-2xl font-semibold tracking-tight transition-colors first:mt-0">
           TFL v1.0.0
         </h2>
         <p className="text-sm text-muted-foreground pb-4">
           TM25 Face Lab
         </p>
-        <p className="text-sm text-muted-foreground py-4">
+        <Separator className="my-2" />
+        <p className="text-sm text-muted-foreground py-2">
           本网站基于九个头部朝向范围，对互联网上部分现存的托马斯·穆勒照片做了分类。
         </p>
-        <p className="text-sm text-muted-foreground py-4">
+        <p className="text-sm text-muted-foreground pb-6">
           点击下方任一按钮，即可选择按钮所指示的特定头部朝向范围的照片。
         </p>
-        <div className="flex flex-col space-y-2 justify-between items-center pb-4">
+        {/* buttons */}
+        <div className="flex flex-col space-y-2 justify-between items-center pb-10">
           <div className="flex space-x-2">
             <Button size="icon"
               onClick={() => setSelectedFolder('p111')}
@@ -131,11 +157,30 @@ export default function Home() {
             </Button>
           </div>
         </div>
+
+
+        <Separator className="my-2" />
+      <div className="absolute bottom-4">
+        <div className="flex flex-col justify-between space-y-0">
+          
+          <div className="">
+          <Button variant="link" className="gap-2 p-0 text-gray-400"
+          onClick={() => window.location.href = "mailto:3057224618@qq.com"}>
+            诚招后台开发
+            <ExternalLinkIcon className="w-4 h-4" />
+          </Button>
+          </div>
+        </div>
+        </div>
+        </div>
+      )}
+        
+        
       </div>
 
       {/* 右侧 */}
       
-      <div className="w-3/4 h-full" style={{ overflowY: 'scroll' }}>
+      <div className="w-full h-full" style={{ overflowY: 'scroll' }}>
       <header className="flex justify-between items-center border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
             style={{
               position: 'fixed', borderBottom: '0.4px solid #dddddd',
