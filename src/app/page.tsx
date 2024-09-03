@@ -1,5 +1,7 @@
 "use client";  // 将组件标记为客户端组件
 
+
+
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import  getImageDimensions from 'next/image';
